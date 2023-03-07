@@ -5,10 +5,22 @@ Given(`I am on OrangeHRM website at Sign In page`, () => {
   loginPage.openPage();
 });
 
-When(/^I sign in using my (valid|invalid) account credentials$/, credentialsState => {
-  loginPage.fillUsername("Admin");
-  loginPage.fillPassword("admin123");
+When(/^I sign in using my (valid|invalid) account credentials$/, state => {
+  const credentials = {
+    valid: {
+      username: "Admin",
+      password: "admin123"
+    },
+    invalid: {
+      username: "AdmIn",
+      password: "Admin_123"
+    },
+  }
+  
+  loginPage.fillUsername(credentials[`${state}`].username);
+  loginPage.fillPassword(credentials[`${state}`].password);
   loginPage.submitLogin();
+
 });
 
 Then(`my session loads at the Dashboard page`, () => {
