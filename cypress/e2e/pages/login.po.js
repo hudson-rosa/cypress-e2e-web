@@ -5,7 +5,8 @@ const loginPO = {
   locators: {
     usernameField: 'input[name="username"]',
     passwordField: 'input[name="password"]',
-    loginButton: 'button[type="submit"]'
+    loginButton: 'button[type="submit"]',
+    errorMessage: '.orangehrm-login-error p[class*="alert-content-text"]'
   }
 };
 
@@ -28,5 +29,9 @@ module.exports = {
 
   submitLogin: function () {
     cy.get(loginPO.locators.loginButton).click();
+  },
+
+  assertErrorMessage: function (message) {
+    cy.get(loginPO.locators.errorMessage).should("contain", message);
   }
 };
