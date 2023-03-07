@@ -9,26 +9,24 @@ const loginPO = {
   }
 };
 
-class LoginPage {
-  openPage() {
+module.exports = {
+  openPage: function () {
     cy.visit(loginPO.url);
-  }
+  },
 
-  assertTitle(expected = loginPO.title) {
+  assertTitle: function (expected = loginPO.title) {
     cy.title().should("eq", expected);
-  }
+  },
 
-  fillUsername(value = "") {
+  fillUsername: function (value = "") {
     cy.get(loginPO.locators.usernameField).type(value);
-  }
+  },
 
-  fillPassword(value = "") {
+  fillPassword: function (value = "") {
     cy.get(loginPO.locators.passwordField).type(value);
-  }
+  },
 
-  submitLogin() {
+  submitLogin: function () {
     cy.get(loginPO.locators.loginButton).click();
   }
-}
-
-module.exports = LoginPage;
+};
