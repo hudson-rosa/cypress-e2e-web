@@ -1,0 +1,7 @@
+node_modules
+output
+screenshots
+videos
+.DS_Store
+.idea
+.vscode
