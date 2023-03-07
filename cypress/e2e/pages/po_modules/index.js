@@ -1,4 +1,4 @@
 module.exports = {
-  DashboardPage: require('.././dashboard.po'),
-  LoginPage: require('.././login.po')
+  dashboardPage: require('.././dashboard.po'),
+  loginPage: require('.././login.po')
 };
