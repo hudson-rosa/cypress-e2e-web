@@ -36,8 +36,6 @@ module.exports = defineConfig({
     REQRES_BASE_URI: process.env.REQRES_BASE_URI,
 
     BROWSER: String(process.env.BROWSER).toLowerCase(),
-    HEADLESS: process.env.HEADLESS,
-    SCREENSHOT: String(process.env.SCREENSHOT).toLowerCase(),
     RETRY: process.env.RETRY === "" ? 0 : process.env.RETRY,
 
     API_TIME_OUT: process.env.API_TIME_OUT,
