@@ -8,10 +8,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cy:open": "cross-env npx cypress open --browser chrome",
-    "cy:run": "cross-env TEST_ENV=dev npx cypress run --browser chrome",
-    "cy:run:headed:spec": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed --spec",
-    "cy:run:headed:tag": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed tags=",
-    "cy:run:headed:all": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed tags='@regression'"
+    "cy:e2e": "cross-env TEST_ENV=dev npx cypress run --browser chrome",
+    "cy:e2e:spec": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed --spec",
+    "cy:e2e:feature": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed --spec",
+    "cy:e2e:tag": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed --env",
+    "cy:e2e-ui": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --browser chrome --headed --spec cypress/e2e/ui/specs/*.cy.js",
+    "cy:e2e-api": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --spec 'cypress/e2e/api/specs/*.cy.js'",
+    "cy:e2e-ui:regression": "cross-env TEST_ENV=dev npx cypress run --browser chrome --headed --env tags='@ui or @authentication'",
+    "cy:e2e-api:regression": "cross-env TEST_ENV=dev npx cypress run --env tags='@api'"
   },
   "keywords": [
     "cypress",
@@ -26,13 +30,15 @@
     "cypress-cucumber-preprocessor": "^4.3.1"
   },
   "dependencies": {
+    "@cypress/code-coverage": "^3.10.4",
+    "@faker-js/faker": "^7.6.0",
+    "cypress-cucumber-tagging": "^1.0.3",
     "dotenv": "^16.0.3"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
-      "cypress/e2e/steps/**/*.steps.{js,ts}",
-      "cypress/support/step_definitions/**/*.{js,ts}"
+      "cypress/e2e/**/steps/*.steps.{js,ts}"
     ]
   }
 }

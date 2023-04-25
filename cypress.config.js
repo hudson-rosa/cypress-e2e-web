@@ -1,4 +1,7 @@
 const { defineConfig } = require("cypress");
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
+const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
+const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
 const EnvHandler = require("./cypress/fixtures/env-handler");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -10,12 +13,10 @@ const setupEnvVars = () => {
 
 setupEnvVars();
 
-const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
-const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
-const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
-
 module.exports = defineConfig({
   e2e: {
+    includeTags: true,
+    specPattern: "**/*.{feature,cy.js,spec.js}",
     async setupNodeEvents(on, config) {
       const bundler = createBundler({
         plugins: [createEsbuildPlugin(config)]
@@ -25,15 +26,14 @@ module.exports = defineConfig({
       await addCucumberPreprocessorPlugin(on, config);
 
       return config;
-    },
-    specPattern: "cypress/e2e/features/*.feature"
+    }
   },
 
   env: {
     TEST_ENV: String(process.env.TEST_ENV).toLowerCase(),
     TEST_SUITE: process.env.TEST_SUITE,
     DEMO_BASE_URL: process.env.DEMO_BASE_URL,
-    REQRES_BASE_URI: process.env.REQRES_BASE_URI,
+    API_BASE_URI: process.env.API_BASE_URI,
 
     BROWSER: String(process.env.BROWSER).toLowerCase(),
     RETRY: process.env.RETRY === "" ? 0 : process.env.RETRY,
