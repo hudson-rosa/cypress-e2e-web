@@ -34,3 +34,10 @@ Cypress.Commands.add("getSwapiPeople", (id = 1) => {
     url: `${Cypress.env("API_BASE_URI")}people/${id}`
   });
 });
+
+Cypress.Commands.add("getSwapiPlanet", (id = 1) => {
+  return cy.request({
+    method: "GET",
+    url: `${Cypress.env("API_BASE_URI")}planets/${id}`
+  });
+});
