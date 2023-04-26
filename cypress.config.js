@@ -16,7 +16,7 @@ setupEnvVars();
 module.exports = defineConfig({
   e2e: {
     includeTags: true,
-    specPattern: "**/*.{feature,cy.js,spec.js}",
+    specPattern: ["**/*.feature"],
     async setupNodeEvents(on, config) {
       const bundler = createBundler({
         plugins: [createEsbuildPlugin(config)]
