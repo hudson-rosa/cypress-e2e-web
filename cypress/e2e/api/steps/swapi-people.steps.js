@@ -18,7 +18,7 @@ Then(/^I get the character "(.*)" as response$/, name => {
   });
 });
 
-Then(/^I his planet is "(.*)"$/, planet => {
+Then(/^(his|her|its) planet is "(.*)"$/, (characterPronoun, planet) => {
   cy.get("@swapiPlanet").then(response => {
     expect(response.status).to.eq(200);
     // expect(response.body.url).to.eq("https://swapi.dev/api/people/1/");

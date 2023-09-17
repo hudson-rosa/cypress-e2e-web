@@ -1,4 +1,4 @@
-@ui @regression @authentication
+@ui @regression @authentication @bdd
 Feature: Sign In
 
   Background: Accessing Sign In page

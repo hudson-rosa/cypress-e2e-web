@@ -1,4 +1,4 @@
-@api @regression @registration
+@api @regression @registration @bdd
 Feature: Swapi characters
 
   @character-home-planet
@@ -7,4 +7,4 @@ Feature: Swapi characters
       | character id | planet id |
       | 1            | 1         |
     Then I get the character "Luke Skywalker" as response
-    And I his planet is "Tatooine"
+    And his planet is "Tatooine"
