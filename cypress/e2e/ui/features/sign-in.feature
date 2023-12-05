@@ -10,6 +10,6 @@ Feature: Sign In
     Then my session loads at the Dashboard page
 
   @invalid-sign-in @negative
-  Scenario: Successful sign in to OrangeHRM
+  Scenario: Unsuccessful signin
     When I sign in using invalid account credentials
     Then the message "Invalid credentials" is displayed
