@@ -1,4 +1,4 @@
-@api @regression @registration @bdd
+@api @regression @characters @bdd
 Feature: Swapi characters
 
   @character-home-planet

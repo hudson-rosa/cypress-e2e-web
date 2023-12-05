@@ -26,18 +26,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-let registerResponse;
+// Cypress.Commands.add("getSwapiPeople", (id = 1) => {
+//   return cy.request({
+//     method: "GET",
+//     url: `${Cypress.env("API_BASE_URI")}people/${id}`
+//   });
+// });
 
-Cypress.Commands.add("getSwapiPeople", (id = 1) => {
-  return cy.request({
-    method: "GET",
-    url: `${Cypress.env("API_BASE_URI")}people/${id}`
-  });
-});
-
-Cypress.Commands.add("getSwapiPlanet", (id = 1) => {
-  return cy.request({
-    method: "GET",
-    url: `${Cypress.env("API_BASE_URI")}planets/${id}`
-  });
-});
+// Cypress.Commands.add("getSwapiPlanet", (id = 1) => {
+//   return cy.request({
+//     method: "GET",
+//     url: `${Cypress.env("API_BASE_URI")}planets/${id}`
+//   });
+// });
