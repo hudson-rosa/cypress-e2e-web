@@ -12,15 +12,17 @@ To make it easier, just run the command added to npm Scripts with the Chrome bro
 # RUNNING TESTS
 This project supports specs in Gherkin format which means that we are able to run the tests in several ways, but mainly:
 
-- by spec file path:
-```bash
-    npm run cy:run:headed:spec "cypress/e2e/features/sign-in.feature"
-```
-
 - by cucumber feature/scenario tags:
 ```bash
-    npm run cy:run:headed:tag @invalid-sign-in 
-    npm run cy:run:headed:tag @authentication 
+    npm run e2e:api @characters 
+    npm run e2e:ui @authentication 
+```
+
+# VIEW REPORTS WITH MOCHAWESOME
+- to open reports separately for API or UI tests in HTML, just run the following commands:
+```bash
+    npm run mocha:ui:open
+    npm run mocha:api:open
 ```
 
 # IMPLEMENTING NEW TESTS

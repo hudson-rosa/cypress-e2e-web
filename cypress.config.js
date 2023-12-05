@@ -1,35 +1,20 @@
-const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
-const EnvHandler = require("./cypress/fixtures/env-handler");
-const dotenv = require("dotenv");
-dotenv.config();
 
-const setupEnvVars = () => {
-  EnvHandler.selectEnv();
-  console.log(process.env.DEMO_BASE_URL);
+async function setupNodeEvents (on, config) {
+  const bundler = createBundler({
+    plugins: [createEsbuildPlugin(config)]
+  });
+
+  on("file:preprocessor", bundler);
+  await addCucumberPreprocessorPlugin(on, config);
+
+  return config;
 };
 
-setupEnvVars();
-
-module.exports = defineConfig({
-  e2e: {
-    includeTags: true,
-    specPattern: ["**/*.feature"],
-    async setupNodeEvents(on, config) {
-      const bundler = createBundler({
-        plugins: [createEsbuildPlugin(config)]
-      });
-
-      on("file:preprocessor", bundler);
-      await addCucumberPreprocessorPlugin(on, config);
-
-      return config;
-    }
-  },
-
-  env: {
+function environmentVariables() {
+  return {
     TEST_ENV: String(process.env.TEST_ENV).toLowerCase(),
     TEST_SUITE: process.env.TEST_SUITE,
     DEMO_BASE_URL: process.env.DEMO_BASE_URL,
@@ -48,5 +33,18 @@ module.exports = defineConfig({
     BROWSERSTACK_USERNAME_SECRET: process.env.BROWSERSTACK_USERNAME_SECRET,
     BROWSERSTACK_ACCESS_KEY_SECRET: process.env.BROWSERSTACK_ACCESS_KEY_SECRET,
     BROWSERSTACK_COUNTRY_CODE: process.env.BROWSERSTACK_COUNTRY_CODE
-  }
-});
+  };
+};
+
+function mochaParameters(reportDir) {
+  return {
+    "autoOpen": true,
+    "charts": true,
+    "overwrite": true,
+    "html": true,
+    "json": true,
+    "reportDir": reportDir
+  };
+};
+
+exports.mainConfig = { environmentVariables, mochaParameters, setupNodeEvents };
