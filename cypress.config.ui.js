@@ -18,7 +18,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     video: false,
     includeTags: true,
-    specPattern: ["cypress/e2e/ui/**/*.feature"],
+    specPattern: ["cypress/e2e/ui/features/*.feature"],
     
     async setupNodeEvents(on, config) {
       return mainConfig.setupNodeEvents(on, config);

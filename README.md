@@ -12,10 +12,10 @@ To make it easier, just run the command added to npm Scripts with the Chrome bro
 # RUNNING TESTS
 This project supports specs in Gherkin format which means that we are able to run the tests in several ways, but mainly:
 
-- by cucumber feature/scenario tags:
+- by cucumber feature/scenario using tags:
 ```bash
-    npm run e2e:api @characters 
-    npm run e2e:ui @authentication 
+    npm run e2e:api -e TAGS='@characters' 
+    npm run e2e:ui -e TAGS='@authentication'
 ```
 
 # VIEW REPORTS WITH MOCHAWESOME

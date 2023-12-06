@@ -11,10 +11,10 @@
     "cy:open": "cross-env npx cypress open --browser chrome",
     "mocha:ui:open": "open cypress/reports/ui-tests/mochawesome-report/mochawesome.html",
     "mocha:api:open": "open cypress/reports/api-tests/mochawesome-report/mochawesome.html",
-    "e2e:api": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js -e",
+    "e2e:api": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js",
     "e2e:api:regression": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js -e TAGS=\"@regression\"",
-    "e2e:ui": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e",
-    "e2e:ui:headless": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome -e",
+    "e2e:ui": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed",
+    "e2e:ui:headless": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome",
     "e2e:ui:regression": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e TAGS=\"@regression\""
   },
   "keywords": [

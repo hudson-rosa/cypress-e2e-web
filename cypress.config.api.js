@@ -16,7 +16,7 @@ module.exports = defineConfig({
   reporter: 'mochawesome',
   e2e: {
     includeTags: true,
-    specPattern: ["cypress/e2e/api/**/*.feature"],
+    specPattern: ["cypress/e2e/api/features/*.feature"],
     
     async setupNodeEvents(on, config) {
       return mainConfig.setupNodeEvents(on, config);
