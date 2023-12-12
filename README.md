@@ -1,5 +1,6 @@
 # INSTALLING THE PROJECT
 Use `npm install` to install all modules needed based on package.json.
+For the K6 tests, install it by using the commands from here: [K6.io - docs](https://k6.io/docs/get-started/installation/)
 
 # OPENING CYPRESS LAUNCHPAD 
 Use `npx cypress open` to open the launchpad and select the test approach (e2e testing or component testing). You can define a different browser if needed to run the launchpad by using `cross-env npx cypress open --browser chrome`. 
@@ -9,13 +10,20 @@ To make it easier, just run the command added to npm Scripts with the Chrome bro
     npm run cy:open
 ```
 
-# RUNNING TESTS
+# RUNNING CYPRESS TESTS
 This project supports specs in Gherkin format which means that we are able to run the tests in several ways, but mainly:
 
 - by cucumber feature/scenario using tags:
 ```bash
     npm run e2e:api -e TAGS='@characters' 
     npm run e2e:ui -e TAGS='@authentication'
+```
+
+# RUNNING PERFORMANCE TESTS WITH K6
+Some sample tests can be run for performance check purposes using K6, as follows. If you need to change the metrics expected, make the changes within the `k6/load-tests.js`:
+
+```bash
+    npm run k6:load' 
 ```
 
 # VIEW REPORTS WITH MOCHAWESOME
