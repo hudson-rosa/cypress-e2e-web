@@ -15,7 +15,8 @@
     "e2e:api:regression": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js -e TAGS=\"@regression\"",
     "e2e:ui": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed",
     "e2e:ui:headless": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome",
-    "e2e:ui:regression": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e TAGS=\"@regression\""
+    "e2e:ui:regression": "TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e TAGS=\"@regression\"",
+    "k6:load": "TEST_ENV=dev k6 run --vus 7 --duration 3s k6/load-tests.js"
   },
   "keywords": [
     "cypress",
@@ -28,7 +29,8 @@
     "cross-env": "^7.0.3",
     "cypress": "^13.6.0",
     "cypress-cucumber-preprocessor": "^4.3.1",
-    "cypress-cucumber-tagging": "^1.0.3"
+    "cypress-cucumber-tagging": "^1.0.3",
+    "k6": "^0.0.0"
   },
   "dependencies": {
     "@cypress/code-coverage": "^3.12.11",
