@@ -13,17 +13,19 @@ const setupEnvVars = () => {
 setupEnvVars();
 
 module.exports = defineConfig({
-  reporter: 'mochawesome',
-  e2e: {    
+  reporter: "cypress-mochawesome-reporter",
+  e2e: {
     chromeWebSecurity: false,
-    video: false,
+    video: true,
+    screenshot: true,
     includeTags: true,
     specPattern: ["cypress/e2e/ui/features/*.feature"],
     
     async setupNodeEvents(on, config) {
+      mainConfig.cucumberReporterParameters("cypress/reports/cucumber-reporter", process.env.PROJECT_NAME, process.env.RELEASE_VERSION);
       return mainConfig.setupNodeEvents(on, config);
     },
-
+    
     reporterOptions: mainConfig.mochaParameters("cypress/reports/ui-tests/mochawesome-report")
   },
 

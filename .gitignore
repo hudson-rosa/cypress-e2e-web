@@ -1,7 +1,9 @@
 downloads
 node_modules
 output
-reports
+**/reports/cucumber-reporter
+**/reports/**/mochawesome-report
+cucumber-messages.ndjson
 screenshots
 videos
 .DS_Store

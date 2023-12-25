@@ -19,6 +19,13 @@ This project supports specs in Gherkin format which means that we are able to ru
     npm run e2e:ui -e TAGS='@authentication'
 ```
 
+- by cucumber feature by triggering the regression alias, as such as:
+
+```bash
+    npm run e2e:api:regression
+    npm run e2e:ui:regression
+```
+
 # RUNNING PERFORMANCE TESTS WITH K6
 Some sample tests can be run for performance check purposes using K6, as follows. If you need to change the metrics expected, make the changes within the `k6/load-tests.js`:
 

@@ -9,14 +9,19 @@
     "verify": "cypress verify",
     "test": "echo \"Error: no test specified\" && exit 1",
     "cy:open": "cross-env npx cypress open --browser chrome",
+    "cucumber-report:clear": "rm -rf ./cypress/reports/cucumber-reporter/",
+    "cucumber-report:json": "mkdir -p ./cypress/reports/cucumber-reporter/json/ && touch ./cypress/reports/cucumber-reporter/json/cucumber-report.json",
+    "cucumber-report:prepare": "npm run cucumber-report:clear && npm run cucumber-report:json",
     "mocha:ui:open": "open cypress/reports/ui-tests/mochawesome-report/mochawesome.html",
     "mocha:api:open": "open cypress/reports/api-tests/mochawesome-report/mochawesome.html",
     "e2e:api": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js",
     "e2e:api:regression": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js -e TAGS=\"@regression\"",
-    "e2e:ui": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed",
-    "e2e:ui:headless": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome",
-    "e2e:ui:regression": "TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e TAGS=\"@regression\"",
-    "k6:load": "TEST_ENV=dev k6 run --vus 7 --duration 3s k6/load-tests.js"
+    "e2e:ui": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed",
+    "e2e:ui:headless": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome",
+    "e2e:ui:regression": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed -e TAGS=\"@regression\"",
+    "k6:load": "TEST_ENV=dev k6 run --vus 7 --duration 3s k6/load-tests.js",
+    "e2e:api:run": "npm run cucumber-report:json && npm run e2e:api -e TAGS='@regression'",
+    "e2e:ui:run": "npm run cucumber-report:json && npm run e2e:ui -e TAGS='@regression'"
   },
   "keywords": [
     "cypress",
@@ -30,20 +35,32 @@
     "cypress": "^13.6.0",
     "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-cucumber-tagging": "^1.0.3",
-    "k6": "^0.0.0"
+    "k6": "^0.0.0",
+    "multiple-cucumber-html-reporter": "^3.5.0"
   },
   "dependencies": {
     "@cypress/code-coverage": "^3.12.11",
     "@faker-js/faker": "^8.3.1",
+    "child_process": "^1.0.2",
     "cypress-mochawesome-reporter": "^3.7.0",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "mocha": "^10.2.0",
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "request-ip": "^3.3.0"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
       "cypress/support/step_definitions/**/*.steps.{js,ts}"
-    ]
+    ],
+    "filterSpecs": true,
+    "omitFiltered": true,
+    "json": {
+      "enabled": true,
+      "formatter": "cucumber-json-formatter",
+      "output": "cypress/reports/cucumber-reporter/json/cucumber-report.json"
+    }
   }
 }

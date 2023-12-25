@@ -1,5 +1,4 @@
 const { defineConfig } = require("cypress");
-
 const { mainConfig } = require("./cypress.config");
 const EnvHandler = require("./cypress/fixtures/env-handler");
 const dotenv = require("dotenv");
@@ -13,12 +12,15 @@ const setupEnvVars = () => {
 setupEnvVars();
 
 module.exports = defineConfig({
-  reporter: 'mochawesome',
+  reporter: 'cypress-mochawesome-reporter',
   e2e: {
+    video: false,
+    screenshot: false,
     includeTags: true,
     specPattern: ["cypress/e2e/api/features/*.feature"],
     
     async setupNodeEvents(on, config) {
+      mainConfig.cucumberReporterParameters("cypress/reports/cucumber-reporter", process.env.SERVICE_NAME, process.env.API_VERSION);
       return mainConfig.setupNodeEvents(on, config);
     },
 
@@ -26,5 +28,4 @@ module.exports = defineConfig({
   },
 
   env: mainConfig.environmentVariables()
-
 });

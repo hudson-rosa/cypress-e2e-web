@@ -1,17 +1,22 @@
+const os = require("os");
+const { exec } = require("child_process");
+const { getOSName } = require("./cypress/support/utils.ts");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
+const report = require("multiple-cucumber-html-reporter");
 
-async function setupNodeEvents (on, config) {
+async function setupNodeEvents(on, config) {
   const bundler = createBundler({
     plugins: [createEsbuildPlugin(config)]
   });
 
   on("file:preprocessor", bundler);
-  await addCucumberPreprocessorPlugin(on, config);
+  require("cypress-mochawesome-reporter/plugin")(on);
 
+  await addCucumberPreprocessorPlugin(on, config);
   return config;
-};
+}
 
 function environmentVariables() {
   return {
@@ -34,17 +39,54 @@ function environmentVariables() {
     BROWSERSTACK_ACCESS_KEY_SECRET: process.env.BROWSERSTACK_ACCESS_KEY_SECRET,
     BROWSERSTACK_COUNTRY_CODE: process.env.BROWSERSTACK_COUNTRY_CODE
   };
-};
+}
 
 function mochaParameters(reportDir) {
   return {
-    "autoOpen": true,
-    "charts": true,
-    "overwrite": true,
-    "html": true,
-    "json": true,
-    "reportDir": reportDir
+    autoOpen: true,
+    charts: true,
+    overwrite: true,
+    html: true,
+    json: true,
+    reportDir: reportDir
   };
-};
+}
 
-exports.mainConfig = { environmentVariables, mochaParameters, setupNodeEvents };
+function cucumberReporterParameters(reportDir, projectName, releaseVersion) {
+  report.generate({
+    jsonDir: `${reportDir}/json`,
+    reportPath: `${reportDir}/html`,
+    metadata: {
+      browser: {
+        name: process.env.BROWSER,
+        version: process.env.BROWSER_VERSION
+      },
+      device: "Local test machine",
+      platform: {
+        name: getOSName(),
+        version: `${getOSName()} - ${os.release()}`
+      }
+    },
+    customData: {
+      title: "Run Test Details",
+      data: [{ label: "Project", value: projectName }, { label: "Release", value: releaseVersion }, { label: "Environment", value: process.env.TEST_ENV.toUpperCase() }]
+    }
+  });
+}
+
+function deleteDirectory(pathToDelete) {
+  const commandToRemove = `rm -rf ${pathToDelete}`;
+  exec(commandToRemove, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error deleting ${pathToDelete}: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`stderr while deleting ${pathToDelete}: ${stderr}`);
+      return;
+    }
+    console.log(`Successfully deleted ${pathToDelete}`);
+  });
+}
+
+exports.mainConfig = { environmentVariables, mochaParameters, cucumberReporterParameters, setupNodeEvents };
