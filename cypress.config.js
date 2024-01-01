@@ -4,7 +4,7 @@ const { getOSName } = require("./cypress/support/utils.ts");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
-const report = require("multiple-cucumber-html-reporter");
+const cucumberReport = require("multiple-cucumber-html-reporter");
 
 async function setupNodeEvents(on, config) {
   const bundler = createBundler({
@@ -13,8 +13,8 @@ async function setupNodeEvents(on, config) {
 
   on("file:preprocessor", bundler);
   require("cypress-mochawesome-reporter/plugin")(on);
-
   await addCucumberPreprocessorPlugin(on, config);
+
   return config;
 }
 
@@ -37,7 +37,13 @@ function environmentVariables() {
 
     BROWSERSTACK_USERNAME_SECRET: process.env.BROWSERSTACK_USERNAME_SECRET,
     BROWSERSTACK_ACCESS_KEY_SECRET: process.env.BROWSERSTACK_ACCESS_KEY_SECRET,
-    BROWSERSTACK_COUNTRY_CODE: process.env.BROWSERSTACK_COUNTRY_CODE
+    BROWSERSTACK_COUNTRY_CODE: process.env.BROWSERSTACK_COUNTRY_CODE,
+
+    allure: true,
+    allureClearSkippedTests: true,
+    allureReuseAfterSpec: true,
+    allureResultsPath: "./cypress/reports/allure/allure-results",
+    allureLogGherkin: true
   };
 }
 
@@ -53,7 +59,7 @@ function mochaParameters(reportDir) {
 }
 
 function cucumberReporterParameters(reportDir, projectName, releaseVersion) {
-  report.generate({
+  cucumberReport.generate({
     jsonDir: `${reportDir}/json`,
     reportPath: `${reportDir}/html`,
     metadata: {

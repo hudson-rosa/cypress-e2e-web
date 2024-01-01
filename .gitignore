@@ -3,6 +3,7 @@ node_modules
 output
 **/reports/cucumber-reporter
 **/reports/**/mochawesome-report
+**/reports/allure/allure-report
 cucumber-messages.ndjson
 screenshots
 videos

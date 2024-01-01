@@ -34,11 +34,30 @@ Some sample tests can be run for performance check purposes using K6, as follows
 ```
 
 # VIEW REPORTS WITH MOCHAWESOME
-- to open reports separately for API or UI tests in HTML, just run the following commands:
+There are 2 different ways to check reports. we can use:
+
+- MOCHAWESOME: to open reports separately and automatically for API or UI tests in HTML, just run the following commands:
 ```bash
     npm run mocha:ui:open
     npm run mocha:api:open
 ```
+
+- MULTIPLE CUCUMBER HTML REPORTER: call especific scripts that allows you to generate the test results for API or UI tests in HTML:
+```bash
+    npm run e2e:ui:run
+    npm run e2e:api:run
+```
+
+- ALLURE: First of all, make sure you ahve Allure installed on your machine:
+```bash
+    brew install Allure
+```
+    Then, just run the same commands for test:
+```bash
+    npm run e2e:ui:run
+    npm run e2e:api:run
+```
+
 
 # IMPLEMENTING NEW TESTS
 To create a new test, you need to perform these actions into the project:
