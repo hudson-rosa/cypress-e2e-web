@@ -10,28 +10,30 @@ const loginPO = {
   }
 };
 
-module.exports = {
-  openPage: function () {
+class LoginPage {
+  openPage() {
     cy.visit(loginPO.url);
-  },
+  }
 
-  assertTitle: function (expected = loginPO.title) {
+  assertTitle(expected = loginPO.title) {
     cy.title().should("eq", expected);
-  },
+  }
 
-  fillUsername: function (value = "") {
+  fillUsername(value = "") {
     cy.get(loginPO.locators.usernameField).type(value);
-  },
+  }
 
-  fillPassword: function (value = "") {
+  fillPassword(value = "") {
     cy.get(loginPO.locators.passwordField).type(value);
-  },
+  }
 
-  submitLogin: function () {
+  submitLogin() {
     cy.get(loginPO.locators.loginButton).click();
-  },
+  }
 
-  assertErrorMessage: function (message) {
+  assertErrorMessage(message) {
     cy.get(loginPO.locators.errorMessage).should("contain", message);
   }
-};
+}
+
+module.exports = LoginPage;

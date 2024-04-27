@@ -48,14 +48,14 @@ There are 2 different ways to check reports. we can use:
     npm run e2e:api:run
 ```
 
-- ALLURE: First of all, make sure you ahve Allure installed on your machine:
+- ALLURE: First of all, make sure you have Allure installed on your machine:
 ```bash
     brew install Allure
 ```
     Then, just run the same commands for test:
 ```bash
-    npm run e2e:ui:run
-    npm run e2e:api:run
+    npm run e2e:ui:regression
+    npm run e2e:api:regression
 ```
 
 

@@ -10,13 +10,17 @@ const dashboardPO = {
   }
 };
 
-module.exports = {
-  seeUrl: function () {
-    cy.url().should("eq", dashboardPO.url);
-  },
+class DashboardPage {
 
-  assertDashboardHeader: function () {
-    cy.get(dashboardPO.locators.dashboardHeader).first().should("be.exist");
+  seeUrl() {
+    cy.url().should("eq", dashboardPO.url);
+  }
+
+  assertDashboardHeader() {
+    cy.get(dashboardPO.locators.dashboardHeader).first().should('be.exist');
     cy.get(dashboardPO.locators.dashboardHeader).should("contain", dashboardPO.text.dashboardHeader);
   }
-};
+
+}
+
+module.exports = DashboardPage;

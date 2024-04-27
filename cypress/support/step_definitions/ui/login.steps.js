@@ -1,5 +1,9 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { loginPage, dashboardPage } from "../../pages/ui/po_modules";
+import LoginPage from "../../pages/ui/login.po.js";
+import DashboardPage from "../../pages/ui/dashboard.po.js";
+
+const loginPage = new LoginPage();
+const dashboardPage = new DashboardPage();
 
 Given(`I am on OrangeHRM website at Sign In page`, () => {
   loginPage.openPage();

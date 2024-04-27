@@ -40,10 +40,11 @@ function environmentVariables() {
     BROWSERSTACK_COUNTRY_CODE: process.env.BROWSERSTACK_COUNTRY_CODE,
 
     allure: true,
-    allureClearSkippedTests: true,
+    allureResultsPath: "cypress/reports/allure/allure-results",
     allureReuseAfterSpec: true,
-    allureResultsPath: "./cypress/reports/allure/allure-results",
-    allureLogGherkin: true
+    allureClearSkippedTests: false,
+    allureAttachRequests: true,
+    allureLogGherkin: true,
   };
 }
 
