@@ -1,9 +1,9 @@
 const os = require("os");
 const { exec } = require("child_process");
 const { getOSName } = require("./cypress/support/utils.ts");
-const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin;
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const cucumberReport = require("multiple-cucumber-html-reporter");
 
 async function setupNodeEvents(on, config) {

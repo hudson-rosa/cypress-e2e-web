@@ -5,9 +5,14 @@ Feature: Sign In
     Given I am on OrangeHRM website at Sign In page
 
   @sign-in
-  Scenario: Successful sign in to OrangeHRM
+  Scenario Outline: Successful sign in to OrangeHRM
+    Given that I opened the page with the size of <viewport>
     When I sign in using valid account credentials
     Then my session loads at the Dashboard page
+    Examples:
+      | viewport  |
+      | iphone-xr |
+      | 412, 732  |
 
   @invalid-sign-in @negative
   Scenario: Unsuccessful signin

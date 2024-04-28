@@ -1,7 +1,7 @@
 const { defineConfig } = require("cypress");
 const { mainConfig } = require("./cypress.config");
 const EnvHandler = require("./cypress/fixtures/env-handler");
-const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+const allureWriter = require("@shelex/cypress-allure-plugin/writer");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -17,16 +17,18 @@ module.exports = defineConfig({
   e2e: {
     chromeWebSecurity: false,
     video: true,
+    videosFolder: "cypress/reports/videos",
     screenshot: true,
+    screenshotsFolder: "cypress/reports/screenshots",
     includeTags: true,
     specPattern: ["cypress/e2e/ui/features/*.feature"],
-    
+
     async setupNodeEvents(on, config) {
       mainConfig.cucumberReporterParameters("cypress/reports/cucumber-reporter", process.env.PROJECT_NAME, process.env.RELEASE_VERSION);
       allureWriter(on, config);
       return mainConfig.setupNodeEvents(on, config);
     },
-    
+
     reporterOptions: mainConfig.mochaParameters("cypress/reports/ui-tests/mochawesome-report")
   },
 
