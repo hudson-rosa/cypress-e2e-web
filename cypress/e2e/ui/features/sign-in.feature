@@ -12,7 +12,7 @@ Feature: Sign In
     Examples:
       | viewport  |
       | iphone-xr |
-      | 412, 732  |
+      | 1000, 660 |
 
   @invalid-sign-in @negative
   Scenario: Unsuccessful signin
