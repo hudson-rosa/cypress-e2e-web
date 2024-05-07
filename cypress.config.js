@@ -5,6 +5,48 @@ const addCucumberPreprocessorPlugin = require("@badeball/cypress-cucumber-prepro
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const cucumberReport = require("multiple-cucumber-html-reporter");
+const EnvHandler = require("./cypress/fixtures/env-handler.js");
+const allureWriter = require("@shelex/cypress-allure-plugin/writer");
+const { defineConfig } = require("cypress");
+
+let testType = String(process.env.TEST_TYPE).toLowerCase();
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const setupEnvVars = () => {
+  EnvHandler.selectEnv();
+};
+
+setupEnvVars();
+
+module.exports = defineConfig({
+  reporter: "cypress-mochawesome-reporter",
+  reporterOptions: {
+    charts: true,
+    reportPageTitle: "custom-title",
+    embeddedScreenshots: true,
+    inlineAssets: true,
+    saveAllAttempts: false
+  },
+  e2e: {
+    chromeWebSecurity: false,
+    video: enableForUiTests(),
+    videosFolder: "cypress/reports/videos",
+    screenshot: enableForUiTests(),
+    screenshotsFolder: "cypress/reports/screenshots",
+    includeTags: true,
+    specPattern: setConfigPerTestLevel(["cypress/e2e/ui/features/*.feature"], ["cypress/e2e/api/features/*.feature"]),
+    reporterOptions: setConfigPerTestLevel(mochaParameters("cypress/reports/ui-tests/mochawesome-report"), mochaParameters("cypress/reports/api-tests/mochawesome-report")),
+
+    async setupNodeEvents(on, config) {
+      require("cypress-mochawesome-reporter/plugin")(on);
+      allureWriter(on, config);
+      return setupNodeEvents(on, config);
+    }
+  },
+  env: environmentVariables()
+});
 
 async function setupNodeEvents(on, config) {
   const bundler = createBundler({
@@ -12,15 +54,28 @@ async function setupNodeEvents(on, config) {
   });
 
   on("file:preprocessor", bundler);
-  require("cypress-mochawesome-reporter/plugin")(on);
+
   await addCucumberPreprocessorPlugin(on, config);
+  cucumberReporterParameters(
+    "cypress/reports/cucumber-reporter",
+    setConfigPerTestLevel([process.env.PROJECT_NAME, process.env.RELEASE_VERSION], [process.env.SERVICE_NAME, process.env.API_VERSION])
+  );
 
   return config;
+}
+
+function enableForUiTests() {
+  return testType == "ui" ? true : false;
+}
+
+function setConfigPerTestLevel(forUi, forApi) {
+  return testType == "ui" ? forUi : forApi;
 }
 
 function environmentVariables() {
   return {
     TEST_ENV: String(process.env.TEST_ENV).toLowerCase(),
+    TEST_TYPE: process.env.TEST_TYPE,
     TEST_SUITE: process.env.TEST_SUITE,
     DEMO_BASE_URL: process.env.DEMO_BASE_URL,
     API_BASE_URI: process.env.API_BASE_URI,
@@ -45,6 +100,10 @@ function environmentVariables() {
     allureClearSkippedTests: false,
     allureAttachRequests: true,
     allureLogGherkin: true,
+    defaultCommandTimeout: 90000,
+    execTimeout: 90000,
+    pageLoadTimeout: 90000,
+    taskTimeout: 90000
   };
 }
 
@@ -55,6 +114,8 @@ function mochaParameters(reportDir) {
     overwrite: true,
     html: true,
     json: true,
+    embeddedScreenshots: true,
+    inlineAssets: true,
     reportDir: reportDir
   };
 }

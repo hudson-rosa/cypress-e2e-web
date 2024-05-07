@@ -18,11 +18,20 @@
     "mocha:ui:open": "open cypress/reports/ui-tests/mochawesome-report/mochawesome.html",
     "mocha:api:open": "open cypress/reports/api-tests/mochawesome-report/mochawesome.html",
     "k6:load": "TEST_ENV=dev k6 run --vus 7 --duration 3s k6/load-tests.js",
-    "e2e:api": "cross-env TEST_ENV=dev npx cypress run --reporter mochawesome --config-file cypress.config.api.js",
-    "e2e:api:regression": "npm run allure:clean && npm run cucumber-report:json && npm run e2e:api -e TAGS=\"@regression\" -e allure=true && npm run allure:report && npm run allure:open",
-    "e2e:ui:headless": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome",
-    "e2e:ui": "cross-env TEST_ENV=dev TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.ui.js --browser chrome --headed",
-    "e2e:ui:regression": "npm run allure:clean && npm run cucumber-report:json && npm run e2e:ui -e TAGS=\"@regression\" -e allure=true && npm run allure:report && npm run allure:open"
+    "e2e:api": "cross-env TEST_ENV=dev TEST_TYPE=api TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.js",
+    "e2e:api:regression": "npm run allure:clean && npm run cucumber-report:json && npm run e2e:api -e TAGS=\"@regression\" -e TEST_TYPE=api -e allure=true && npm run allure:report && npm run allure:open",
+    "e2e:ui:headless": "cross-env TEST_ENV=dev TEST_TYPE=ui TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.js --browser chrome",
+    "e2e:ui": "cross-env TEST_ENV=dev TEST_TYPE=ui TZ=UTC npx cypress run --reporter mochawesome --config-file cypress.config.js --browser chrome --headed",
+    "e2e:ui:regression": "npm run allure:clean && npm run cucumber-report:json && npm run e2e:ui -e TAGS=\"@regression\" -e PROJECT_NAME=\"@ORANGE HRM\" -e TEST_ENV=dev -e TEST_TYPE=ui -e allure=true && npm run allure:report && npm run allure:open",
+
+    "docker:build:e2e": "docker build -t cypress-e2e-tests .",
+    "docker:run:e2e": "docker run --rm -e TEST_ENV=dev -e TEST_TYPE=ui cypress-e2e-tests npm run e2e:ui",
+    "docker:run:api": "docker run --rm -e TEST_ENV=dev -e TEST_TYPE=api cypress-e2e-tests npm run e2e:api",
+
+    "docker-remove-images": "docker rmi -f $(docker images -q)",
+    "docker-remove-containers": "docker rm -f $(docker ps -aq)",
+    "docker-show-images": "docker images -q",
+    "docker-show-containers": "docker ps -aq"
   },
   "keywords": [
     "cypress",
@@ -35,7 +44,7 @@
     "@shelex/cypress-allure-plugin": "^2.40.1",
     "allure-commandline": "^2.25.0",
     "cross-env": "^7.0.3",
-    "cypress": "^13.6.0",
+    "cypress": "^13.6.2",
     "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-cucumber-tagging": "^1.0.3",
     "k6": "^0.0.0",
@@ -55,7 +64,7 @@
     "request-ip": "^3.3.0"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true,
+    "nonGlobalStepDefinitions": false,
     "stepDefinitions": [
       "cypress/support/step_definitions/**/*.steps.{js,ts}"
     ],
